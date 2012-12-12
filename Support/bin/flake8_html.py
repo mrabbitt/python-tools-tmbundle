@@ -1,21 +1,17 @@
 
 """
-Implementation of the command-line I{pyflakes} tool.
+Implementation of the command-line I{flake8} tool.
 """
 
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'pyflakes'))
-
-from pyflakes.scripts.pyflakes import check
-
-checker = __import__('pyflakes.checker').checker
+import flake8parser
 
 HTML = """
 <html>
   <head>
-    <title>PyFlakes Results</title>
+    <title>Flake8 Results</title>
     <style type="text/css">
       body {
         font-size: 13px;
@@ -66,15 +62,15 @@ HTML = """
 """
 
 
-def main():
+def main(args):
     # import re
     # lineno = re.compile(r'^(\d+)\:')
     results = {'E': 0, 'W': 0}
     output, warnings = [], []
 
-    filepath = os.environ['TM_FILEPATH']
+    filepath = args[0]
 
-    warnings += check(sys.stdin.read(), filepath)
+    warnings += flake8parser.flake8_warnings(filepath)
 
     for warning in warnings:
         # line = lineno.sub('' % dict(
@@ -82,17 +78,13 @@ def main():
         #     lineno=warning.lineno,
         #     col=warning.col,
         # ), str(warning))
-        output.append(('<li><a href="txmt://open?url=file://%(filepath)s'
-                       '&line=%(lineno)s&column=%(col)s">%(filename)s:'
-                       '%(lineno)s</a><pre><code>%(message)s</code></pre></li>'
-                       ) % dict(
-                           col=warning.col,
-                           lineno=warning.lineno,
-                           filepath=warning.filename,
-                           filename=os.path.basename(warning.filename),
-                           message=warning.message % warning.message_args,
-                       )
-                      )
+        output.append('<li><a href="txmt://open?url=file://%(filepath)s&line=%(lineno)s&column=%(col)s">%(filename)s:%(lineno)s</a><pre><code>%(message)s</code></pre></li>' % dict(
+            col=warning.col,
+            lineno=warning.lineno,
+            filepath=warning.filename,
+            filename=os.path.basename(warning.filename),
+            message=warning.message % warning.message_args,
+        ))
         results[warning.level] += 1
 
     output = "\n\n".join(output)
@@ -103,4 +95,4 @@ def main():
     )
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
