@@ -9,6 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'pyflakes'))
 
 from pyflakes.scripts.pyflakes import check
 
+
 def main():
     content = open(sys.argv[-1], 'r').read()
 

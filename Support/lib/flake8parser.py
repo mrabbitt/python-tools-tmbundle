@@ -45,8 +45,14 @@ def flake8_warnings(filepath):
         for line in out.splitlines():
             match = _FLAKE8_MESSAGE.match(line.strip())
             if match:
-                level = match.group('level') if match.group('level') in ('E', 'W') else 'W'
-                warning = WarningMessage(match.group('filename'), match.group('lineno'), match.group('col'),match.group('message'), level)
+                level = match.group('level')
+                if not match.group('level') in ('E', 'W'):
+                    level = 'W'
+
+                warning = WarningMessage(match.group('filename'),
+                                         match.group('lineno'),
+                                         match.group('col'),
+                                         match.group('message'), level)
                 warnings.append(warning)
 
             else:
