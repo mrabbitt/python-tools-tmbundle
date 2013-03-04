@@ -8,39 +8,13 @@ from StringIO import StringIO
 
 import flake8.run
 
-_FLAKE8_MESSAGE = re.compile(r'^(?P<filename>[^:]+):(?P<lineno>\d*):((?P<col>\d*):?)? (?:(?P<level>E|W)\d+ )?(?P<message>.+?)$')
-
-_LINE_TOO_LONG_RE = re.compile(r'line too long \((?P<length>\d+) > (?P<max_length>\d+) characters\)')
-_MAX_LINE_LENGTH = 120
-
-
-def filter_line_too_long(warning):
-    '''Exclude "line too long" warnings for lengths than _MAX_LINE_LENGTH.
-    Ideally, flake8 should be configured to use a custom max line length
-    rather than using a hack like this.
-    '''
-    match = _LINE_TOO_LONG_RE.match(warning.message)
-    if match:
-        length = int(match.group('length'))
-        if length < _MAX_LINE_LENGTH:
-            return False
-    return True
-
-
-def filter_warning(warning_message):
-    for afilter in _WARNING_FILTERS:
-        if not afilter(warning_message):
-            return False
-    return True
-
-
-_WARNING_FILTERS = [filter_line_too_long]
-
+_FLAKE8_MESSAGE = re.compile(r'^(?P<filename>[^:]+):(?P<lineno>\d*):(?P<col>\d*):? (?:(?P<level>E|W)\d+ )?(?P<message>.+?)$')
 
 class WarningMessage(object):
     message_args = ()
 
     def __init__(self, filename, lineno, col, message, level):
+        """docstring for __init__"""
         self.filename = filename
         self.lineno = lineno
         self.col = col
@@ -48,9 +22,8 @@ class WarningMessage(object):
         self.level = level
 
     def __str__(self):
-        return '{0}:{1}: {2}'.format(os.path.basename(self.filename),
-                                     self.lineno,
-                                     self.message % self.message_args)
+        return '%s:%s: %s' % (os.path.basename(self.filename), self.lineno,
+                              self.message % self.message_args)
 
 
 def flake8_warnings(filepath):
@@ -80,8 +53,7 @@ def flake8_warnings(filepath):
                                          match.group('lineno'),
                                          match.group('col'),
                                          match.group('message'), level)
-                if filter_warning(warning):
-                    warnings.append(warning)
+                warnings.append(warning)
 
             else:
                 warnings.append(WarningMessage(filepath, 1, 1, line, 'W'))
