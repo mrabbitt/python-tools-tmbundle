@@ -1,20 +1,24 @@
+from __future__ import unicode_literals, print_function
 import re
 import sys
 import os
 from StringIO import StringIO
 
-# sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'pyflakes'))
-# checker = __import__('pyflakes.checker').checker
+try:
+    import flake8.run
+    assert flake8.__version__ >= 2.0
+except Exception, e:
+    print('Unsatisfied dependency for validation command: flake8 >= 2.0')
+    raise SystemExit(1)
 
-import flake8.run
+_FLAKE8_MESSAGE = re.compile(r'^(?P<filename>[^:]+):(?P<lineno>\d*):((?P<col>\d*):?)? (?:(?P<level>E|W)\d+ )?(?P<message>.+?)$')  # noqa
 
-_FLAKE8_MESSAGE = re.compile(r'^(?P<filename>[^:]+):(?P<lineno>\d*):(?P<col>\d*):? (?:(?P<level>E|W)\d+ )?(?P<message>.+?)$')
 
 class WarningMessage(object):
+    '''Wrapper for warning message returned by flake8.'''
     message_args = ()
 
     def __init__(self, filename, lineno, col, message, level):
-        """docstring for __init__"""
         self.filename = filename
         self.lineno = lineno
         self.col = col
@@ -22,12 +26,12 @@ class WarningMessage(object):
         self.level = level
 
     def __str__(self):
-        return '%s:%s: %s' % (os.path.basename(self.filename), self.lineno,
-                              self.message % self.message_args)
+        return '{0}:{1}: {2}'.format(os.path.basename(self.filename),
+                                     self.lineno,
+                                     self.message % self.message_args)
 
 
 def flake8_warnings(filepath):
-    flake8.run._initpep8()
 
     backup_stdout = sys.stdout
 
@@ -39,7 +43,6 @@ def flake8_warnings(filepath):
         sys.stdout.close()   # close the stream
         sys.stdout = backup_stdout  # restore original stdout
 
-    out  # captured output wrapped in a string
     warnings = []
     if out:
         for line in out.splitlines():
@@ -58,5 +61,8 @@ def flake8_warnings(filepath):
             else:
                 warnings.append(WarningMessage(filepath, 1, 1, line, 'W'))
 
-    # assert len(warnings) == warning_count
+    if len(warnings) != warning_count:
+        print("flake8 warnings = {0}, parsed warning count = {1}".format(
+            warning_count, len(warnings)
+        ), file=sys.stderr)
     return warnings

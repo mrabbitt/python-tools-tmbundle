@@ -78,7 +78,7 @@ def main(args):
         #     lineno=warning.lineno,
         #     col=warning.col,
         # ), str(warning))
-        output.append('<li><a href="txmt://open?url=file://%(filepath)s&line=%(lineno)s&column=%(col)s">%(filename)s:%(lineno)s</a><pre><code>%(message)s</code></pre></li>' % dict(
+        output.append('<li><a href="txmt://open?url=file://%(filepath)s&line=%(lineno)s&column=%(col)s">%(filename)s:%(lineno)s</a><pre><code>%(message)s</code></pre></li>' % dict(  # NOQA
             col=warning.col,
             lineno=warning.lineno,
             filepath=warning.filename,
