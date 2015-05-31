@@ -17,8 +17,7 @@ Installation
 PyFlakes
 --------
 
-* *Validate Syntax* (⇧⌥V) validates the syntax of the file using
-`Flake8 <http://flake8.readthedocs.org/en/latest/>`_ and shows the results in a new window.
+* *Validate Syntax* (⇧⌥V) validates the syntax of the file using `Flake8 <http://flake8.readthedocs.org/en/latest/>`_ and shows the results in a new window.
 * *Validate Syntax Quick* (⌘S) same as above except that instead of a dedicated window you simply get a tooltip showing the the errors and warnings.
 
 Credits
