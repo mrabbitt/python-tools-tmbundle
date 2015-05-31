@@ -11,7 +11,8 @@ except Exception, e:
     print('Unsatisfied dependency for validation command: flake8 >= 2.0')
     raise SystemExit(1)
 
-_FLAKE8_MESSAGE = re.compile(r'^(?P<filename>[^:]+):(?P<lineno>\d*):((?P<col>\d*):?)? (?:(?P<level>E|W)\d+ )?(?P<message>.+?)$')  # noqa
+# Warning codes from:  http://flake8.readthedocs.org/en/2.0/warnings.html
+_FLAKE8_MESSAGE = re.compile(r'^(?P<filename>[^:]+):(?P<lineno>\d*):((?P<col>\d*):?)? (?:(?P<level>E|W|F|C|N)\d+ )?(?P<message>.+?)$')  # noqa
 
 
 class WarningMessage(object):
