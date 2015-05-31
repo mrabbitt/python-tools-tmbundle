@@ -51,7 +51,7 @@ HTML = """
     </style>
   </head>
   <body>
-    <h1>Python Lint</h1>
+    <h1>Python Flake8 Validation Results</h1>
     <h2>%(results)s</h2>
 
     <ul>

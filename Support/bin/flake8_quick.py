@@ -1,4 +1,3 @@
-
 """
 Implementation of the command-line I{flake8} tool.
 """
