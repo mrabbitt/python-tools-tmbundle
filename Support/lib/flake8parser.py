@@ -2,13 +2,18 @@ from __future__ import unicode_literals, print_function
 import re
 import sys
 import os
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except:
+    from io import StringIO
 
+# TODO:  Add compatility with flake8 3.0 (flake8.run no longer exists).
+# For now:  pip install 'flake8>=2.0,<3.0'
 try:
     import flake8.run
-    assert flake8.__version__ >= 2.0
-except Exception, e:
-    print('Unsatisfied dependency for validation command: flake8 >= 2.0')
+    assert flake8.__version__ >= '2.0'
+except Exception as e:
+    print('Unsatisfied dependency for validation command: flake8 >= 2.0: {0}'.format(e))
     raise SystemExit(1)
 
 # Warning codes from:  http://flake8.readthedocs.org/en/2.0/warnings.html
