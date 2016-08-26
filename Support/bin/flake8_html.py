@@ -2,7 +2,7 @@
 """
 Implementation of the command-line I{flake8} tool.
 """
-
+from __future__ import print_function
 import sys
 import os
 
@@ -89,10 +89,10 @@ def main(args):
 
     output = "\n\n".join(output)
 
-    print HTML % dict(
+    print(HTML % dict(
         output=output,
         results='%d error(s), %d warning(s)' % (results['E'], results['W']),
-    )
+    ))
 
 if __name__ == '__main__':
     main(sys.argv[1:])
