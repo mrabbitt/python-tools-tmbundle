@@ -7,13 +7,13 @@ try:
 except:
     from io import StringIO
 
-# TODO:  Add compatility with flake8 3.0 (flake8.run no longer exists).
-# For now:  pip install 'flake8>=2.0,<3.0'
+# TODO Add Makefile which does `pip install --target Support/lib 'flake8>=3.0,<4.0'`
 try:
-    import flake8.run
-    assert flake8.__version__ >= '2.0'
+    import flake8
+    assert flake8.__version__ >= '3.0'
+    from flake8.main import application
 except Exception as e:
-    print('Unsatisfied dependency for validation command: flake8 >= 2.0: {0}'.format(e))
+    print('Unsatisfied dependency for validation command: flake8 >= 3.0: {0}'.format(e))
     raise SystemExit(1)
 
 # Warning codes from:  http://flake8.readthedocs.org/en/2.0/warnings.html
@@ -43,7 +43,9 @@ def flake8_warnings(filepath):
 
     try:
         sys.stdout = StringIO()      # capture output
-        warning_count = flake8.run.check_file(filepath)
+        app = application.Application()
+        app.run([filepath])
+        warning_count = app.result_count
         out = sys.stdout.getvalue()  # release output
     finally:
         sys.stdout.close()   # close the stream
