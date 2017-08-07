@@ -94,5 +94,6 @@ def main(args):
         results='%d error(s), %d warning(s)' % (results['E'], results['W']),
     ))
 
+
 if __name__ == '__main__':
     main(sys.argv[1:])
