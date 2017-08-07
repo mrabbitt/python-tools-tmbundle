@@ -7,13 +7,13 @@ try:
 except:
     from io import StringIO
 
-# TODO Add Makefile which does `pip install --target Support/lib 'flake8>=3.0,<4.0'`
 try:
     import flake8
-    assert flake8.__version__ >= '3.0'
+    flake8_vers = flake8.__version__
+    assert flake8_vers >= '3.0' and flake8_vers < '4.0', "flake8 version 3.x expected, actual: {0}".format(flake8_vers)
     from flake8.main import application
 except Exception as e:
-    print('Unsatisfied dependency for validation command: flake8 >= 3.0: {0}'.format(e))
+    print('Unsatisfied dependency for validation command: flake8 v3.x: {0}'.format(e))
     raise SystemExit(1)
 
 # Warning codes from:  http://flake8.readthedocs.org/en/2.0/warnings.html

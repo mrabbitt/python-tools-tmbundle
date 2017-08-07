@@ -8,9 +8,9 @@ Installation
 
 ::
 
-    git clone https://github.com/dcramer/python-tools-tmbundle.git ~/Library/Application\ Support/TextMate/Bundles/PythonTools.tmbundle
+    git clone https://github.com/mrabbitt/python-tools-tmbundle.git ~/Library/Application\ Support/TextMate/Bundles/PythonTools.tmbundle
     cd ~/Library/Application\ Support/TextMate/Bundles/PythonTools.tmbundle
-    pip install --target Support/lib flake8
+    make
 
 2. Reload TextMate or Navigate to Bundles -> Bundle Editor -> Reload Bundles.
 
@@ -23,4 +23,5 @@ PyFlakes
 Credits
 -------
 
+`Original version using PyFlakes by dcramer <https://github.com/dcramer/python-tools-tmbundle>`_.
 Based on the `JavaScript Tools Bundle <https://github.com/johnmuhl/javascript-tools-tmbundle>`_.
