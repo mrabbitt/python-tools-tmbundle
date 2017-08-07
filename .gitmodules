@@ -1,3 +1,0 @@
-[submodule "Support/bin/pyflakes"]
-	path = Support/bin/pyflakes
-	url = git://github.com/dcramer/pyflakes.git
